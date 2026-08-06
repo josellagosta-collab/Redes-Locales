@@ -1,0 +1,197 @@
+:root {
+
+    /* Azul Monlau */
+
+    --md-primary-fg-color: #0057A8;
+    --md-primary-fg-color--light: #2E79BD;
+    --md-primary-fg-color--dark: #003B75;
+
+    /* Amarillo */
+
+    --md-accent-fg-color: #FFD200;
+
+}
+
+.portada {
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.md-typeset h1{
+    color:#0057A8;
+}
+
+.md-typeset h2{
+    color:#0057A8;
+}
+
+.md-typeset h3{
+    color:#003B75;
+}
+
+.md-typeset table th{
+
+    background:#0057A8;
+    color:white;
+
+}
+
+.md-typeset .admonition.note{
+
+    border-left:6px solid #FFD200;
+
+}
+
+.figura-libro {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.figura-libro img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 14%);
+}
+
+.figura-libro figcaption {
+  margin-top: 0.8rem;
+  color: #4b5563;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ==========================================================
+   APROVECHAR MÁS EL ANCHO DE LA PÁGINA
+   ========================================================== */
+
+/* Ancho máximo del contenido */
+.md-grid {
+    max-width: 1800px;
+}
+
+/* Contenido principal más ancho */
+.md-content {
+    max-width: 100%;
+}
+
+/* El artículo ocupa prácticamente todo el espacio */
+.md-content__inner {
+    max-width: 100%;
+    margin: 0 1rem;
+}
+
+/* Figuras al ancho disponible */
+.md-typeset img {
+    max-width: 100%;
+}
+
+/* Tablas más amplias */
+.md-typeset__table {
+    width: 100%;
+}
+
+/* ==========================================================
+   MENÚ LATERAL MÁS ESTRECHO
+   ========================================================== */
+
+@media screen and (min-width: 76.25em) {
+
+    .md-sidebar {
+        width: 11rem;
+    }
+
+    .md-sidebar--primary {
+        left: 0;
+    }
+
+    .md-main__inner {
+        margin-left: 11.5rem;
+    }
+
+}
+
+/* ==========================================================
+   REDUCIR LOS MÁRGENES DEL TEXTO
+   ========================================================== */
+
+.md-typeset {
+    max-width: none;
+    font-size: 0.82rem;
+}
+
+.figura-libro {
+
+    width: 100%;
+    margin: 2rem auto;
+
+}
+
+.figura-libro img{
+
+    width:100%;
+
+}
+
+
+/* ==========================================================
+   MARCADORES DE PROGRESO DE LOS GRUPOS
+   ========================================================== */
+
+.marcadores-clase {
+    position: fixed;
+    right: 18px;
+    bottom: 70px;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.marcador-grupo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 7px 9px;
+
+    background: rgba(255, 255, 255, 0.96);
+    border: 2px solid #0057a8;
+    border-radius: 10px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.15);
+}
+
+.marcador-titulo {
+    min-width: 65px;
+
+    font-weight: 700;
+    color: #0057a8;
+}
+
+.marcador-grupo button {
+    border: none;
+    border-radius: 6px;
+
+    padding: 5px 9px;
+
+    cursor: pointer;
+
+    background: #0057a8;
+    color: white;
+
+    font-size: .72rem;
+}
+
+.marcador-grupo button:hover {
+    background: #003b75;
+}
+
+.marcador-estado {
+    color: #ffd200;
+    font-size: 1rem;
+}

@@ -1,0 +1,25 @@
+# Entorno virtual
+.venv/
+
+# MkDocs
+site/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+
+# VS Code (solo configuración personal)
+.vscode/settings.json
+
+# Sistemas operativos
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Archivos temporales
+*.tmp
+*.bak
+*.log
+
+# Caché de MkDocs
+.cache/
