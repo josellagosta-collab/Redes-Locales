@@ -48,7 +48,7 @@ Gracias a ellos podemos sustituir un switch por otro de un fabricante distinto s
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_1.png"
+   src="../../assets/images/parte1/capitulo2/figura2_1.png"
     alt="Dispositivos de distintos fabricantes comunicándose gracias a los estándares"
   >
   <figcaption>
@@ -70,7 +70,7 @@ Los estándares evitan este problema estableciendo unas normas comunes aceptadas
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_2.png"
+   src="../../assets/images/parte1/capitulo2/figura2_2.png"
     alt="Problemas de compatibilidad cuando no existen estándares"
   >
   <figcaption>
@@ -223,7 +223,7 @@ Gracias a esta colaboración, muchos estándares terminan siendo aceptados inter
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_3.png"
+   src="../../assets/images/parte1/capitulo2/figura2_3.png"
     alt="Principales organismos de normalización en redes"
   >
   <figcaption>
@@ -233,7 +233,7 @@ Gracias a esta colaboración, muchos estándares terminan siendo aceptados inter
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_4.png"
+   src="../../assets/images/parte1/capitulo2/figura2_4.png"
     alt="Proceso desde la creación de un estándar hasta la compatibilidad entre dispositivos"
   >
   <figcaption>
@@ -320,7 +320,7 @@ Los ordenadores también siguen una secuencia ordenada de acciones para intercam
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_5.png"
+   src="../../assets/images/parte1/capitulo2/figura2_5.png"
     alt="Comparación entre una conversación humana y un protocolo de comunicación"
   >
   <figcaption>
@@ -345,7 +345,7 @@ Gracias a estas reglas, dispositivos desarrollados por fabricantes completamente
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_6.png"
+   src="../../assets/images/parte1/capitulo2/figura2_6.png"
     alt="Funciones principales de un protocolo de comunicación"
   >
   <figcaption>
@@ -478,7 +478,7 @@ Cada protocolo desempeña una función específica y el conjunto hace posible la
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_7.png"
+   src="../../assets/images/parte1/capitulo2/figura2_7.png"
     alt="Comparación entre una suite de protocolos y un equipo de trabajo"
   >
   <figcaption>
@@ -510,7 +510,7 @@ En el siguiente apartado estudiaremos con más detalle la familia TCP/IP y compr
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_8.png"
+   src="../../assets/images/parte1/capitulo2/figura2_8.png"
     alt="Funcionamiento conjunto de la suite TCP/IP"
   >
   <figcaption>
@@ -612,7 +612,7 @@ Su verdadero potencial reside precisamente en que trabajan de forma coordinada.
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_9.png"
+   src="../../assets/images/parte1/capitulo2/figura2_9.png"
     alt="Visión general de la familia TCP/IP"
   >
   <figcaption>
@@ -648,7 +648,7 @@ Toda la complejidad queda oculta gracias al funcionamiento conjunto de la famili
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_10.png"
+   src="../../assets/images/parte1/capitulo2/figura2_10.png"
     alt="Recorrido simplificado de una petición web"
   >
   <figcaption>
@@ -832,7 +832,7 @@ Cada uno realiza una función distinta y todos colaboran para ofrecer el servici
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_11.png"
+   src="../../assets/images/parte1/capitulo2/figura2_11.png"
     alt="Protocolos más utilizados en las redes actuales"
   >
   <figcaption>
@@ -842,7 +842,7 @@ Cada uno realiza una función distinta y todos colaboran para ofrecer el servici
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_12.png"
+   src="../../assets/images/parte1/capitulo2/figura2_12.png"
     alt="Cómo colaboran los protocolos al cargar una página web"
   >
   <figcaption>
@@ -915,7 +915,7 @@ El objetivo principal consiste en observar la comunicación, no en aprender toda
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_13.png"
+   src="../../assets/images/parte1/capitulo2/figura2_13.png"
     alt="Escenario de la práctica en Cisco Packet Tracer"
   >
   <figcaption>
@@ -1023,7 +1023,7 @@ En los próximos capítulos aprenderemos a interpretar toda esta información.
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_14.png"
+   src="../../assets/images/parte1/capitulo2/figura2_14.png"
     alt="Visualización de paquetes en el modo Simulation"
   >
   <figcaption>
@@ -1108,7 +1108,7 @@ En esta práctica **no modificaremos ninguna configuración**. El objetivo consi
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_15.png"
+   src="../../assets/images/parte1/capitulo2/figura2_15.png"
     alt="Material utilizado en la práctica de taller"
   >
   <figcaption>
@@ -1157,7 +1157,7 @@ Anota en tu cuaderno la función que crees que desempeña cada elemento.
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo2/figura2_16.png"
+   src="../../assets/images/parte1/capitulo2/figura2_16.png"
     alt="Montaje de la red y acceso por consola"
   >
   <figcaption>

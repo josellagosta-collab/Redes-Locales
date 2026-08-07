@@ -51,7 +51,7 @@ Gracias a esta interconexión es posible compartir documentos, acceder a Interne
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_1.png"
+   src="../../assets/images/parte1/capitulo1/figura1_1.png"
     alt="Ejemplo de una red informática"
   >
   <figcaption>
@@ -83,7 +83,7 @@ Las redes también forman parte de nuestra vida cotidiana. En casa conectamos or
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_2.png"
+   src="../../assets/images/parte1/capitulo1/figura1_2.png"
     alt="Comparación entre un trabajo sin red informática y el mismo escenario utilizando una red local"
   >
   <figcaption>
@@ -126,7 +126,7 @@ Todos ellos pueden compartir la conexión a Internet e intercambiar información
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_3.png"
+   src="../../assets/images/parte1/capitulo1/figura1_3.png"
     alt="Red doméstica"
   >
   <figcaption>
@@ -160,7 +160,7 @@ Gracias a esta infraestructura cualquier alumno puede iniciar sesión desde dist
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_4.png"
+   src="../../assets/images/parte1/capitulo1/figura1_4.png"
     alt="Red de un centro educativo"
   >
   <figcaption>
@@ -200,7 +200,7 @@ Gracias a ello un ordenador situado en Barcelona puede comunicarse con un servid
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_5.png"
+   src="../../assets/images/parte1/capitulo1/figura1_5.png"
     alt="Componentes de una red local"
   >
   <figcaption>
@@ -276,7 +276,7 @@ Cada uno de ellos presenta ventajas e inconvenientes que estudiaremos en capítu
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_6.png"
+   src="../../assets/images/parte1/capitulo1/figura1_6.png"
     alt="Comunicación entre dispositivos"
   >
   <figcaption>
@@ -368,7 +368,7 @@ Aunque estamos acostumbrados a medir la capacidad de almacenamiento en bytes (GB
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_7.png"
+   src="../../assets/images/parte1/capitulo1/figura1_7.png"
     alt="Bit, byte y múltiplos"
   >
   <figcaption>
@@ -410,7 +410,7 @@ Sin embargo, internamente han viajado miles o incluso millones de bits.
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_8.png"
+   src="../../assets/images/parte1/capitulo1/figura1_8.png"
     alt="Recorrido de un archivo por la red"
   >
   <figcaption>
@@ -420,7 +420,7 @@ Sin embargo, internamente han viajado miles o incluso millones de bits.
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_9.png"
+   src="../../assets/images/parte1/capitulo1/figura1_9.png"
     alt="Conversión de un documento en datos digitales para su transmisión."
   >
   <figcaption>
@@ -466,7 +466,7 @@ Este sistema proporciona una gran comodidad, aunque suele ser más sensible a in
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_10.png"
+   src="../../assets/images/parte1/capitulo1/figura1_10.png"
     alt="Dispositivos de una red"
   >
   <figcaption>
@@ -524,7 +524,7 @@ Como inconveniente principal presenta una distancia máxima recomendada de aprox
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_11.png"
+   src="../../assets/images/parte1/capitulo1/figura1_11.png"
     alt="Cable UTP y conector RJ-45"
   >
   <figcaption>
@@ -560,7 +560,7 @@ Su principal inconveniente es que tanto el cable como los equipos necesarios par
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_12.png"
+   src="../../assets/images/parte1/capitulo1/figura1_12.png"
     alt="Cable de fibra óptica"
   >
   <figcaption>
@@ -598,7 +598,7 @@ Por este motivo, en muchas empresas se utilizan conjuntamente redes cableadas e 
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_13.png"
+   src="../../assets/images/parte1/capitulo1/figura1_13.png"
     alt="Comparación wifi cable"
   >
   <figcaption>
@@ -701,7 +701,7 @@ Si alguno se pierde durante el recorrido, únicamente será necesario volver a e
 
 <figure class="figura-libro">
   <img
-    src="/assets/images/parte1/capitulo1/figura1_14.png"
+   src="../../assets/images/parte1/capitulo1/figura1_14.png"
     alt="División en paquetes"
   >
   <figcaption>
