@@ -136,62 +136,127 @@
 
 }
 
-
 /* ==========================================================
-   MARCADORES DE PROGRESO DE LOS GRUPOS
+   PANEL DE PROGRESO DEL CURSO
    ========================================================== */
 
 .marcadores-clase {
+
     position: fixed;
-    right: 18px;
-    bottom: 70px;
+    right: 20px;
+    bottom: 130px;
+
+    width: 240px;
+
+    background: rgba(255,255,255,.97);
+
+    border: 2px solid #0057a8;
+    border-radius: 14px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.18);
+
+    overflow: hidden;
+
     z-index: 1000;
 
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
 }
 
-.marcador-grupo {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+/* Cabecera */
 
-    padding: 7px 9px;
+.marcadores-clase::before{
 
-    background: rgba(255, 255, 255, 0.96);
-    border: 2px solid #0057a8;
-    border-radius: 10px;
+    content:"PROGRESO DEL CURSO";
 
-    box-shadow: 0 3px 10px rgba(0,0,0,.15);
+    display:block;
+
+    background:#0057a8;
+
+    color:white;
+
+    font-weight:700;
+
+    text-align:center;
+
+    padding:10px;
+
+    letter-spacing:.5px;
+
 }
 
-.marcador-titulo {
-    min-width: 65px;
+/* Cada grupo */
 
-    font-weight: 700;
-    color: #0057a8;
+.marcador-grupo{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:12px 14px;
+
+    border-bottom:1px solid #e6e6e6;
+
 }
 
-.marcador-grupo button {
-    border: none;
-    border-radius: 6px;
+.marcador-grupo:last-child{
 
-    padding: 5px 9px;
+    border-bottom:none;
 
-    cursor: pointer;
-
-    background: #0057a8;
-    color: white;
-
-    font-size: .72rem;
 }
 
-.marcador-grupo button:hover {
-    background: #003b75;
+/* Nombre */
+
+.marcador-titulo{
+
+    width:70px;
+
+    font-weight:700;
+
+    color:#0057a8;
+
 }
 
-.marcador-estado {
-    color: #ffd200;
-    font-size: 1rem;
+/* Botón */
+
+.marcador-grupo button{
+
+    background:#0057a8;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:6px 12px;
+
+    cursor:pointer;
+
+    font-size:.78rem;
+
+    transition:.2s;
+
+}
+
+.marcador-grupo button:hover{
+
+    background:#003d73;
+
+}
+
+/* Estado */
+
+.marcador-estado{
+
+    color:#FFD200;
+
+    font-size:1rem;
+
+    min-width:80px;
+
+    text-align:center;
+
 }
