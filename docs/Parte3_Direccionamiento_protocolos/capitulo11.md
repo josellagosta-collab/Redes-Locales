@@ -8508,3 +8508,1141 @@ Si todo es correcto, podemos comenzar la configuración.
     1. Explica qué está mal.
     2. Indica por qué.
     3. Propón una corrección.
+
+## 11.16 Resumen del capítulo
+
+En este capítulo hemos aprendido a dividir una red IPv4 en redes más pequeñas mediante **subnetting**.
+
+Partiendo de una red de clase C con máscara `/24`, hemos visto cómo modificar la parte correspondiente a los hosts para crear diferentes subredes adaptadas a las necesidades de una organización.
+
+El subnetting permite:
+
+- dividir una red en varias redes lógicas;
+- reducir el tamaño de los dominios de broadcast;
+- organizar los dispositivos por departamentos o funciones;
+- aprovechar mejor el espacio de direccionamiento;
+- facilitar la administración de la red;
+- y preparar una estructura adecuada para el encaminamiento entre redes.
+
+---
+
+### De /24 a subredes más pequeñas
+
+Una red:
+
+```text
+192.168.1.0/24
+```
+
+dispone originalmente de:
+
+```text
+8 bits para hosts
+```
+
+Al aumentar el prefijo utilizamos algunos de esos bits para crear subredes.
+
+Por ejemplo:
+
+| Prefijo | Máscara | Direcciones | Hosts utilizables | Salto |
+|:-------:|---------|------------:|------------------:|------:|
+| `/24` | `255.255.255.0` | 256 | 254 | 256 |
+| `/25` | `255.255.255.128` | 128 | 126 | 128 |
+| `/26` | `255.255.255.192` | 64 | 62 | 64 |
+| `/27` | `255.255.255.224` | 32 | 30 | 32 |
+| `/28` | `255.255.255.240` | 16 | 14 | 16 |
+| `/29` | `255.255.255.248` | 8 | 6 | 8 |
+| `/30` | `255.255.255.252` | 4 | 2 | 4 |
+
+Esta tabla constituye una referencia especialmente útil para trabajar con las redes estudiadas en este capítulo.
+
+---
+
+### El método del salto
+
+Para localizar rápidamente las subredes hemos utilizado:
+
+```text
+Salto = 256 - valor significativo de la máscara
+```
+
+Por ejemplo:
+
+```text
+/27
+```
+
+corresponde a:
+
+```text
+255.255.255.224
+```
+
+Por tanto:
+
+```text
+256 - 224 = 32
+```
+
+Los bloques comienzan en:
+
+```text
+0
+32
+64
+96
+128
+160
+192
+224
+```
+
+Cada uno representa una subred diferente.
+
+---
+
+### Estructura de una subred
+
+En cada subred debemos identificar:
+
+```text
+Dirección de red
+       ↓
+Primer host
+       ↓
+Hosts utilizables
+       ↓
+Último host
+       ↓
+Broadcast
+```
+
+Por ejemplo:
+
+```text
+192.168.1.64/27
+```
+
+produce:
+
+```text
+Red:          192.168.1.64
+Primer host:  192.168.1.65
+Último host:  192.168.1.94
+Broadcast:    192.168.1.95
+```
+
+La dirección de red y el broadcast no se asignan a los hosts en las subredes convencionales utilizadas en este capítulo.
+
+---
+
+### Cálculo del número de hosts
+
+Si tenemos:
+
+```text
+h = bits disponibles para hosts
+```
+
+utilizamos:
+
+```text
+Hosts utilizables = 2^h - 2
+```
+
+Por ejemplo, con `/27`:
+
+```text
+32 - 27 = 5 bits de host
+```
+
+por tanto:
+
+```text
+2^5 - 2
+= 32 - 2
+= 30 hosts
+```
+
+---
+
+### FLSM
+
+En **FLSM** todas las subredes utilizan la misma máscara.
+
+Por ejemplo:
+
+```text
+192.168.1.0/24
+        ↓
+       /26
+        ↓
+192.168.1.0/26
+192.168.1.64/26
+192.168.1.128/26
+192.168.1.192/26
+```
+
+Todas disponen de:
+
+```text
+62 hosts utilizables
+```
+
+FLSM resulta sencillo, pero puede desperdiciar direcciones cuando las necesidades de las redes son muy diferentes.
+
+---
+
+### VLSM
+
+Con **VLSM** podemos utilizar máscaras diferentes.
+
+Por ejemplo:
+
+```text
+50 hosts → /26
+25 hosts → /27
+12 hosts → /28
+ 6 hosts → /29
+```
+
+De esta manera podemos adaptar cada subred a sus necesidades.
+
+La regla práctica utilizada ha sido:
+
+> **Ordenar las redes de mayor a menor número de hosts y asignar primero los bloques más grandes.**
+
+---
+
+### Plan de direccionamiento
+
+El resultado de nuestros cálculos debe convertirse en documentación.
+
+Un plan de direccionamiento debe indicar, como mínimo:
+
+```text
+Subred
+Prefijo
+Máscara
+Primer host
+Último host
+Broadcast
+Gateway
+```
+
+Posteriormente podremos asignar direcciones concretas a:
+
+```text
+routers
+switches gestionables
+servidores
+ordenadores
+impresoras
+puntos de acceso
+otros dispositivos
+```
+
+---
+
+### Comunicación entre subredes
+
+Dos equipos pueden determinar si el destino pertenece a su propia subred utilizando la dirección IP y la máscara.
+
+Conceptualmente:
+
+```text
+IP + MÁSCARA
+      ↓
+DIRECCIÓN DE RED
+```
+
+Si dos hosts pertenecen a la misma red:
+
+```text
+Host A
+   ↓
+Switch
+   ↓
+Host B
+```
+
+pueden comunicarse localmente.
+
+Si pertenecen a redes diferentes:
+
+```text
+Host A
+   ↓
+Switch
+   ↓
+Gateway
+   ↓
+Router
+   ↓
+Otra subred
+   ↓
+Host B
+```
+
+será necesario encaminamiento.
+
+---
+
+### La máscara forma parte de la dirección
+
+No debemos interpretar:
+
+```text
+192.168.1.70
+```
+
+de forma aislada.
+
+Debemos interpretar:
+
+```text
+192.168.1.70/27
+```
+
+porque la máscara determina qué bits identifican la red y cuáles corresponden a los hosts.
+
+Por esta razón, dos direcciones aparentemente próximas pueden pertenecer a redes diferentes.
+
+---
+
+## 11.17 Conceptos clave
+
+### Subnetting
+
+Proceso mediante el cual dividimos una red IP en varias subredes más pequeñas.
+
+---
+
+### Subred
+
+División lógica de una red IP que dispone de su propia dirección de red, rango de hosts y broadcast.
+
+---
+
+### Máscara de subred
+
+Valor que permite determinar qué parte de una dirección IPv4 identifica la red y qué parte identifica al host.
+
+Ejemplo:
+
+```text
+255.255.255.192
+```
+
+---
+
+### Prefijo CIDR
+
+Forma abreviada de representar la máscara indicando el número de bits utilizados para identificar la red.
+
+Ejemplo:
+
+```text
+/26
+```
+
+equivale a:
+
+```text
+255.255.255.192
+```
+
+---
+
+### Dirección de red
+
+Primera dirección de una subred.
+
+Identifica la propia red y no se asigna a un host en las subredes convencionales estudiadas.
+
+---
+
+### Broadcast
+
+Última dirección de una subred.
+
+Permite dirigir tráfico a todos los hosts de esa subred.
+
+---
+
+### Rango de hosts
+
+Conjunto de direcciones que pueden asignarse a los dispositivos de la subred.
+
+```text
+Primer host = red + 1
+
+Último host = broadcast - 1
+```
+
+---
+
+### Salto
+
+Distancia entre los comienzos de dos subredes consecutivas de igual tamaño.
+
+En los ejemplos trabajados:
+
+```text
+Salto = 256 - octeto significativo de la máscara
+```
+
+---
+
+### FLSM
+
+**Fixed Length Subnet Mask.**
+
+Método en el que todas las subredes utilizan la misma máscara.
+
+---
+
+### VLSM
+
+**Variable Length Subnet Mask.**
+
+Método que permite utilizar diferentes máscaras dentro de un mismo plan de direccionamiento.
+
+---
+
+### Gateway
+
+Dispositivo o interfaz al que un host entrega el tráfico destinado a otras redes.
+
+Debe disponer de una dirección perteneciente a la misma subred del host.
+
+---
+
+### Solapamiento
+
+Situación incorrecta en la que dos subredes utilizan total o parcialmente el mismo espacio de direcciones.
+
+---
+
+### Operación AND
+
+Operación binaria que permite obtener la dirección de red a partir de una dirección IP y su máscara:
+
+```text
+IP
+AND
+MÁSCARA
+=
+RED
+```
+
+---
+
+## 11.18 Mapa conceptual
+
+El contenido del capítulo puede organizarse de la siguiente forma:
+
+```text
+                       SUBNETTING IPv4
+                              │
+             ┌────────────────┼────────────────┐
+             │                │                │
+          MÁSCARA          SUBREDES       PLANIFICACIÓN
+             │                │                │
+             │                │                │
+          PREFIJO          DIRECCIÓN         FLSM
+           CIDR             DE RED             │
+             │                │               VLSM
+             │                │                │
+           SALTO          PRIMER HOST      REQUISITOS
+                              │                │
+                         ÚLTIMO HOST        HOSTS
+                              │                │
+                          BROADCAST        GATEWAY
+                                               │
+                                          DISPOSITIVOS
+                                               │
+                                          CONFIGURACIÓN
+                                               │
+                                         COMPROBACIÓN
+```
+
+Todo el proceso puede resumirse en:
+
+```text
+NECESIDADES
+     ↓
+NÚMERO DE HOSTS
+     ↓
+MÁSCARA
+     ↓
+SUBREDES
+     ↓
+RED + HOSTS + BROADCAST
+     ↓
+GATEWAY
+     ↓
+PLAN DE DIRECCIONAMIENTO
+     ↓
+CONFIGURACIÓN
+     ↓
+PRUEBAS DE CONECTIVIDAD
+```
+
+---
+
+## 11.19 Actividades finales
+
+### Actividad 1. Prefijos y máscaras
+
+Completa:
+
+| Prefijo | Máscara | Hosts utilizables |
+|:-------:|---------|------------------:|
+| `/25` | | |
+| `/26` | | |
+| `/27` | | |
+| `/28` | | |
+| `/29` | | |
+| `/30` | | |
+
+---
+
+### Actividad 2. Calcula el salto
+
+Determina el salto correspondiente a:
+
+```text
+/25
+/26
+/27
+/28
+/29
+```
+
+Indica también los posibles comienzos de subred dentro del último octeto.
+
+---
+
+### Actividad 3. Analiza una /26
+
+Partimos de:
+
+```text
+192.168.40.0/24
+```
+
+y queremos dividirla utilizando:
+
+```text
+/26
+```
+
+Determina:
+
+1. Número de subredes.
+2. Número de hosts utilizables por subred.
+3. Dirección de cada subred.
+4. Primer host.
+5. Último host.
+6. Broadcast.
+
+---
+
+### Actividad 4. Localiza la subred
+
+Determina la dirección de red, primer host, último host y broadcast de:
+
+```text
+192.168.50.75/26
+```
+
+---
+
+### Actividad 5. Otra localización
+
+Realiza el mismo análisis para:
+
+```text
+192.168.50.142/27
+```
+
+---
+
+### Actividad 6. ¿Misma subred?
+
+Determina si pueden considerarse pertenecientes a la misma subred:
+
+```text
+192.168.10.25/27
+192.168.10.30/27
+```
+
+Justifica la respuesta.
+
+---
+
+### Actividad 7. ¿Misma subred?
+
+Ahora analiza:
+
+```text
+192.168.10.25/27
+192.168.10.40/27
+```
+
+Indica la dirección de red de cada host.
+
+---
+
+### Actividad 8. Elige la máscara
+
+Selecciona el prefijo más adecuado para cada necesidad:
+
+| Hosts necesarios | Prefijo |
+|------------------:|:-------:|
+| 100 | |
+| 50 | |
+| 28 | |
+| 14 | |
+| 6 | |
+| 2 | |
+
+---
+
+### Actividad 9. FLSM
+
+Dispones de:
+
+```text
+192.168.60.0/24
+```
+
+y necesitas crear:
+
+```text
+4 subredes del mismo tamaño
+```
+
+Calcula:
+
+- el nuevo prefijo;
+- la máscara;
+- las cuatro direcciones de red;
+- los rangos de hosts;
+- los broadcast.
+
+---
+
+### Actividad 10. VLSM
+
+Dispones de:
+
+```text
+192.168.70.0/24
+```
+
+Necesitas:
+
+```text
+Red A → 55 hosts
+Red B → 25 hosts
+Red C → 12 hosts
+Red D → 6 hosts
+```
+
+Diseña el plan completo utilizando VLSM.
+
+---
+
+### Actividad 11. Detecta el error
+
+Un técnico escribe:
+
+```text
+Red:       192.168.80.64/27
+Hosts:     192.168.80.65 - 192.168.80.95
+Broadcast: 192.168.80.96
+```
+
+¿Es correcto?
+
+Corrige todos los valores que sean necesarios.
+
+---
+
+### Actividad 12. Gateway
+
+Tenemos:
+
+```text
+IP:      192.168.90.75
+Máscara: /27
+```
+
+¿Cuáles de estas direcciones podrían utilizarse como gateway del host?
+
+```text
+192.168.90.1
+192.168.90.64
+192.168.90.65
+192.168.90.80
+192.168.90.94
+192.168.90.95
+192.168.90.96
+```
+
+Justifica cada respuesta.
+
+---
+
+### Actividad 13. AND binario
+
+Calcula mediante una operación AND la dirección de red de:
+
+```text
+192.168.100.150/26
+```
+
+Convierte únicamente el último octeto a binario y muestra la operación.
+
+---
+
+### Actividad 14. Diseño completo
+
+Una empresa dispone de:
+
+```text
+192.168.110.0/24
+```
+
+y necesita:
+
+```text
+Producción      → 58 hosts
+Oficinas        → 27 hosts
+Administración  → 12 hosts
+Dirección       → 5 hosts
+```
+
+Realiza:
+
+1. Selección de prefijos.
+2. Cálculo de máscaras.
+3. Asignación de subredes.
+4. Rangos de hosts.
+5. Broadcast.
+6. Gateway de cada red.
+7. Espacio todavía disponible.
+
+---
+
+### Actividad 15. Diagnóstico
+
+Un PC tiene:
+
+```text
+IP:      192.168.120.70
+Máscara: 255.255.255.224
+Gateway: 192.168.120.1
+```
+
+Responde:
+
+1. ¿Cuál es su prefijo?
+2. ¿A qué subred pertenece?
+3. ¿Cuál es su broadcast?
+4. ¿Cuál es el rango de hosts?
+5. ¿Es correcto el gateway?
+6. Si no lo es, propón uno válido.
+
+---
+
+## 11.20 Autoevaluación
+
+Responde sin consultar el capítulo.
+
+### 1
+
+¿Qué representa `/26`?
+
+**A.** 26 hosts disponibles.  
+**B.** 26 bits utilizados para identificar la parte de red.  
+**C.** 26 subredes.  
+**D.** 26 direcciones utilizables.
+
+---
+
+### 2
+
+¿Cuál es la máscara correspondiente a `/27`?
+
+**A.** `255.255.255.128`  
+**B.** `255.255.255.192`  
+**C.** `255.255.255.224`  
+**D.** `255.255.255.240`
+
+---
+
+### 3
+
+¿Cuántos hosts utilizables proporciona una `/28`?
+
+**A.** 8  
+**B.** 14  
+**C.** 16  
+**D.** 30
+
+---
+
+### 4
+
+¿Cuál es el salto de una `/26`?
+
+**A.** 16  
+**B.** 32  
+**C.** 64  
+**D.** 128
+
+---
+
+### 5
+
+¿Cuál es la dirección de red de:
+
+```text
+192.168.1.70/26
+```
+
+**A.** `192.168.1.0`  
+**B.** `192.168.1.64`  
+**C.** `192.168.1.70`  
+**D.** `192.168.1.128`
+
+---
+
+### 6
+
+¿Cuál es el broadcast de:
+
+```text
+192.168.1.64/26
+```
+
+**A.** `192.168.1.94`  
+**B.** `192.168.1.95`  
+**C.** `192.168.1.126`  
+**D.** `192.168.1.127`
+
+---
+
+### 7
+
+¿Cuál de estas direcciones puede asignarse a un host de `192.168.1.64/27`?
+
+**A.** `192.168.1.64`  
+**B.** `192.168.1.65`  
+**C.** `192.168.1.95`  
+**D.** `192.168.1.96`
+
+---
+
+### 8
+
+¿Qué caracteriza a FLSM?
+
+**A.** Todas las subredes utilizan la misma máscara.  
+**B.** Cada host utiliza una máscara diferente.  
+**C.** No existe dirección de broadcast.  
+**D.** Solo puede utilizarse `/24`.
+
+---
+
+### 9
+
+¿Qué caracteriza a VLSM?
+
+**A.** Solo permite crear dos subredes.  
+**B.** Todas las redes deben tener el mismo tamaño.  
+**C.** Permite utilizar diferentes máscaras según las necesidades.  
+**D.** Elimina la necesidad de utilizar routers.
+
+---
+
+### 10
+
+En VLSM, ¿qué red debemos asignar primero?
+
+**A.** La que tenga menos hosts.  
+**B.** La que tenga más hosts.  
+**C.** La última de la tabla.  
+**D.** Es indiferente.
+
+---
+
+### 11
+
+Dos equipos pertenecen a la misma subred cuando:
+
+**A.** tienen los tres primeros octetos iguales.  
+**B.** utilizan el mismo gateway.  
+**C.** al aplicar sus máscaras obtenemos la misma dirección de red.  
+**D.** están conectados al mismo switch.
+
+---
+
+### 12
+
+¿Qué dirección utiliza normalmente un host para enviar tráfico destinado a otra subred?
+
+**A.** El broadcast.  
+**B.** La dirección de red.  
+**C.** El gateway.  
+**D.** Su propia dirección IP.
+
+---
+
+### 13
+
+¿Qué ocurre si dos subredes se solapan?
+
+**A.** El diseño es incorrecto.  
+**B.** Se duplican los hosts disponibles.  
+**C.** Se convierten automáticamente en una sola red.  
+**D.** No tiene ninguna consecuencia.
+
+---
+
+### 14
+
+¿Cuál de estas direcciones es un comienzo válido para una `/27`?
+
+**A.** `192.168.1.70`  
+**B.** `192.168.1.96`  
+**C.** `192.168.1.100`  
+**D.** `192.168.1.120`
+
+---
+
+### 15
+
+¿Cuál debe ser el orden general de trabajo?
+
+**A.**
+
+```text
+Configurar → calcular → comprobar
+```
+
+**B.**
+
+```text
+Calcular → diseñar → configurar → comprobar
+```
+
+**C.**
+
+```text
+Configurar → probar → diseñar
+```
+
+**D.**
+
+```text
+Probar direcciones hasta encontrar una que funcione
+```
+
+---
+
+## Soluciones de la autoevaluación
+
+```text
+1  → B
+2  → C
+3  → B
+4  → C
+5  → B
+6  → D
+7  → B
+8  → A
+9  → C
+10 → B
+11 → C
+12 → C
+13 → A
+14 → B
+15 → B
+```
+
+---
+
+## 11.21 Reto final del capítulo
+
+Una pequeña empresa recibe para su red interna:
+
+```text
+192.168.200.0/24
+```
+
+Debe proporcionar conectividad a:
+
+```text
+Producción       → 60 hosts
+Oficinas         → 30 hosts
+Administración   → 14 hosts
+Dirección        → 6 hosts
+```
+
+Debes realizar un diseño completo utilizando VLSM.
+
+### Parte 1. Diseño
+
+Calcula para cada área:
+
+```text
+Prefijo
+Máscara
+Dirección de red
+Primer host
+Último host
+Broadcast
+Gateway
+```
+
+Utiliza el primer host como gateway.
+
+---
+
+### Parte 2. Documentación
+
+Construye una tabla:
+
+| Área | Red/prefijo | Máscara | Gateway | Primer host | Último host | Broadcast |
+|------|-------------|---------|---------|-------------|-------------|-----------|
+| Producción | | | | | | |
+| Oficinas | | | | | | |
+| Administración | | | | | | |
+| Dirección | | | | | | |
+
+---
+
+### Parte 3. Ampliación
+
+Una vez terminado el diseño, la empresa comunica que necesita una nueva red:
+
+```text
+Cámaras IP → 20 hosts
+```
+
+Responde:
+
+1. ¿Qué prefijo necesita?
+2. ¿Qué máscara utilizará?
+3. ¿Puede añadirse sin modificar las redes existentes?
+4. ¿Cuál será una dirección de red válida?
+5. ¿Cuál será su rango de hosts?
+6. ¿Cuál será su broadcast?
+7. ¿Qué gateway utilizarías?
+
+---
+
+### Parte 4. Implementación
+
+Construye la red en Cisco Packet Tracer.
+
+Utiliza al menos:
+
+```text
+1 router
+1 switch por subred
+2 dispositivos finales por subred
+```
+
+Configura el direccionamiento calculado.
+
+---
+
+### Parte 5. Verificación
+
+Debes demostrar:
+
+```text
+✓ Comunicación entre hosts de la misma subred.
+
+✓ Comunicación con el gateway.
+
+✓ Comunicación entre subredes diferentes.
+
+✓ Interfaces del router correctamente activadas.
+
+✓ Presencia de las redes directamente conectadas
+  en la tabla de rutas.
+```
+
+Utiliza:
+
+```text
+ping
+```
+
+y en el router:
+
+```text
+show ip interface brief
+show ip route
+```
+
+---
+
+### Parte 6. Diagnóstico
+
+Provoca intencionadamente uno de estos errores:
+
+```text
+Máscara incorrecta
+Gateway incorrecto
+Interfaz desactivada
+```
+
+Explica:
+
+```text
+Qué has modificado.
+Qué comunicación ha dejado de funcionar.
+Cómo has localizado el problema.
+Cómo lo has solucionado.
+```
+
+---
+
+!!! success "Capítulo completado"
+
+    En este capítulo has aprendido a pasar de una única red IPv4 a un conjunto de subredes adaptadas a las necesidades de una organización.
+
+    Ya puedes:
+
+    ```text
+    ✓ Interpretar prefijos CIDR.
+
+    ✓ Calcular máscaras y saltos.
+
+    ✓ Obtener red, hosts y broadcast.
+
+    ✓ Diseñar subredes mediante FLSM.
+
+    ✓ Diseñar planes eficientes mediante VLSM.
+
+    ✓ Determinar si dos hosts pertenecen a la misma subred.
+
+    ✓ Asignar gateways.
+
+    ✓ Elaborar un plan de direccionamiento.
+
+    ✓ Implementarlo en una topología.
+
+    ✓ Comprobar la conectividad.
+
+    ✓ Diagnosticar errores básicos de direccionamiento.
+    ```
+
+    El subnetting deja así de ser únicamente un cálculo matemático y se convierte en una herramienta fundamental para **diseñar y administrar redes IPv4 reales**.

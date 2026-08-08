@@ -412,13 +412,27 @@ En el siguiente apartado estudiaremos con mayor detalle el funcionamiento de Eth
 
 Después de estudiar las diferentes topologías físicas y lógicas, surge una pregunta evidente:
 
-**¿Qué topología utilizan realmente las redes locales actuales?**
+**¿Qué tecnología utilizan realmente las redes locales actuales?**
 
-La respuesta es clara: **la inmensa mayoría de las redes LAN utilizan Ethernet**.
+La respuesta es clara: **la inmensa mayoría de las redes LAN cableadas utilizan Ethernet**.
 
-Desde pequeñas redes domésticas hasta grandes empresas, Ethernet se ha convertido en el estándar más utilizado para conectar ordenadores, servidores, impresoras, cámaras IP y otros dispositivos.
+Desde pequeñas redes domésticas hasta grandes empresas, Ethernet se ha convertido en la tecnología más utilizada para conectar ordenadores, servidores, impresoras, cámaras IP y otros dispositivos.
 
 Su éxito se debe a que combina un alto rendimiento, un coste reducido y una gran facilidad de ampliación.
+
+Pero para comprender realmente cómo funciona Ethernet debemos conocer algunos elementos fundamentales:
+
+```text
+ETHERNET
+   │
+   ├── Tramas
+   │
+   ├── Direcciones MAC
+   │
+   └── Switches
+```
+
+Estos elementos permiten que la información pueda llegar al dispositivo adecuado dentro de una red local.
 
 ---
 
@@ -434,26 +448,39 @@ Estos estándares describen aspectos como:
 - El acceso al medio físico.
 - Las características eléctricas y ópticas de la transmisión.
 
-Gracias a estos estándares, equipos de fabricantes diferentes pueden comunicarse sin problemas siempre que cumplan la norma IEEE 802.3.
+Gracias a estos estándares, equipos de fabricantes diferentes pueden comunicarse siempre que utilicen tecnologías compatibles con Ethernet.
 
 ---
 
 ### Una topología física en estrella
 
-Las redes Ethernet modernas utilizan una **topología física en estrella**.
+Las redes Ethernet modernas utilizan normalmente una **topología física en estrella**.
 
-Todos los dispositivos se conectan mediante un cable individual a un equipo central, que normalmente es un **switch**.
+Todos los dispositivos se conectan mediante un enlace individual a un equipo central, que normalmente es un:
+
+```text
+SWITCH
+```
+
+Por ejemplo:
+
+```text
+               SWITCH
+             /   |   \
+            /    |    \
+          PC0   PC1   PC2
+```
 
 Cada enlace es independiente de los demás.
 
 Esto ofrece importantes ventajas:
 
 - Una avería en un cable solo afecta al dispositivo conectado a ese enlace.
-- Resulta muy sencillo añadir nuevos equipos.
-- La localización de averías es rápida.
-- La red puede crecer sin modificar el resto de la instalación.
+- Resulta sencillo añadir nuevos equipos.
+- La localización de averías es más sencilla.
+- La red puede crecer sin modificar todos los enlaces existentes.
 
-Estas características han convertido la estrella en la topología física predominante en prácticamente todas las redes locales.
+Estas características han convertido la estrella en la topología física predominante en las redes Ethernet actuales.
 
 <figure class="figura-libro">
   <img
@@ -467,30 +494,840 @@ Estas características han convertido la estrella en la topología física predo
 
 ---
 
-### Una comunicación inteligente
+### Las direcciones MAC
 
-Aunque todos los equipos están conectados al mismo switch, la información no se envía a todos ellos.
+Para que Ethernet pueda entregar correctamente la información dentro de una red local necesita alguna forma de identificar las interfaces de red.
 
-Cuando un dispositivo transmite una trama Ethernet, el switch analiza la dirección MAC de destino y reenvía la información únicamente por el puerto correspondiente.
+Para ello utiliza las:
 
-De esta forma:
+```text
+DIRECCIONES MAC
+```
 
-- Se reduce el tráfico innecesario.
-- Disminuyen las colisiones.
-- Varias comunicaciones pueden realizarse simultáneamente.
-- Se mejora el rendimiento general de la red.
+**MAC** procede de:
 
-Este comportamiento diferencia claramente a un switch moderno de los antiguos concentradores (*hubs*), que enviaban la información por todos sus puertos.
+```text
+Media Access Control
+```
+
+Una dirección MAC es un identificador utilizado por Ethernet para identificar una interfaz de red dentro de la comunicación de la capa de enlace.
+
+Por ejemplo:
+
+```text
+00:1A:2B:3C:4D:5E
+```
+
+o:
+
+```text
+A4:5E:60:91:23:BC
+```
+
+Una dirección MAC Ethernet tiene normalmente:
+
+```text
+48 bits
+```
+
+es decir:
+
+```text
+6 bytes
+```
+
+Como escribir 48 bits utilizando ceros y unos sería poco práctico, las direcciones MAC se representan normalmente utilizando números **hexadecimales**.
+
+Por eso encontramos caracteres como:
+
+```text
+0 1 2 3 4 5 6 7 8 9 A B C D E F
+```
+
+Una MAC puede representarse como seis grupos:
+
+```text
+00 : 1A : 2B : 3C : 4D : 5E
+```
+
+Cada grupo representa un byte.
 
 <figure class="figura-libro">
   <img
     src="../../assets/images/parte1/capitulo4/figura4_6.png"
-    alt="Funcionamiento de un switch Ethernet"
+    alt="Estructura y representación de una dirección MAC Ethernet"
   >
   <figcaption>
-    <strong>Figura 4.6.</strong> Funcionamiento básico de un switch Ethernet. El switch consulta su tabla de direcciones MAC y reenvía cada trama únicamente por el puerto al que está conectado el dispositivo de destino, reduciendo el tráfico innecesario y mejorando el rendimiento de la red.
+    <strong>Figura 4.6.</strong> Anatomía sencilla de una dirección MAC Ethernet. Una dirección MAC tiene 48 bits, agrupados en 6 bytes y representados habitualmente mediante números hexadecimales.
   </figcaption>
 </figure>
+
+!!! note "No confundas MAC con IP"
+
+    Una dirección como:
+
+    ```text
+    192.168.1.20
+    ```
+
+    es una **dirección IP**.
+
+    Una dirección como:
+
+    ```text
+    00:1A:2B:3C:4D:5E
+    ```
+
+    es una **dirección MAC**.
+
+    Son direcciones diferentes y cumplen funciones diferentes.
+
+---
+
+### ¿Dónde podemos ver la dirección MAC?
+
+Los sistemas operativos permiten consultar las direcciones MAC de sus interfaces de red.
+
+En Windows podemos utilizar:
+
+```cmd
+ipconfig /all
+```
+
+Entre la información mostrada encontraremos un campo similar a:
+
+```text
+Dirección física. . . . . . . : A4-5E-60-91-23-BC
+```
+
+Windows utiliza normalmente guiones:
+
+```text
+A4-5E-60-91-23-BC
+```
+
+mientras que en otros sistemas o aplicaciones podemos encontrar:
+
+```text
+A4:5E:60:91:23:BC
+```
+
+Ambas representaciones corresponden al mismo tipo de dirección.
+
+---
+
+### Las tramas Ethernet
+
+Ethernet no envía simplemente un conjunto de datos sin ninguna organización.
+
+La información se transporta utilizando unidades denominadas:
+
+```text
+TRAMAS ETHERNET
+```
+
+Una trama contiene diferentes campos que permiten transportar y entregar correctamente la información.
+
+Por ahora no necesitamos estudiar todos ellos.
+
+Nos interesan especialmente:
+
+```text
+┌─────────────────┬─────────────────┬───────────────┐
+│   MAC DESTINO   │    MAC ORIGEN   │     DATOS     │
+└─────────────────┴─────────────────┴───────────────┘
+```
+
+Cuando un ordenador envía una trama:
+
+```text
+MAC origen
+```
+
+identifica la interfaz que la está enviando, mientras que:
+
+```text
+MAC destino
+```
+
+indica a qué interfaz debe entregarse.
+
+Supongamos:
+
+```text
+PC0
+MAC: AA:AA:AA:AA:AA:AA
+
+PC1
+MAC: BB:BB:BB:BB:BB:BB
+```
+
+Si PC0 envía una trama a PC1:
+
+```text
+MAC origen  → AA:AA:AA:AA:AA:AA
+
+MAC destino → BB:BB:BB:BB:BB:BB
+```
+
+El switch puede utilizar esta información para entregar la trama correctamente.
+
+---
+
+### La dirección MAC de broadcast
+
+Existe una dirección MAC especialmente importante:
+
+```text
+FF:FF:FF:FF:FF:FF
+```
+
+Se denomina dirección MAC de:
+
+```text
+BROADCAST
+```
+
+Una trama enviada a esta dirección está destinada a **todos los dispositivos de la red local o dominio de broadcast correspondiente**.
+
+De forma simplificada:
+
+```text
+                 SWITCH
+               /   |   \
+              /    |    \
+            PC1   PC2   PC3
+             ↑     ↑     ↑
+             └─────┼─────┘
+                   │
+             BROADCAST
+```
+
+Este tipo de comunicación se utiliza cuando un dispositivo necesita enviar determinada información a todos los equipos de su red local.
+
+Más adelante veremos un ejemplo muy importante:
+
+```text
+ARP
+```
+
+---
+
+### ¿Cómo sabe el switch dónde está cada dispositivo?
+
+Ya sabemos que un switch recibe tramas Ethernet.
+
+Pero aparece una nueva pregunta:
+
+> **¿Cómo sabe el switch por qué puerto debe enviar una trama?**
+
+Para ello mantiene una:
+
+```text
+TABLA DE DIRECCIONES MAC
+```
+
+También podemos encontrar nombres como:
+
+```text
+tabla MAC
+```
+
+o:
+
+```text
+MAC address table
+```
+
+Esta tabla relaciona:
+
+```text
+DIRECCIÓN MAC ↔ PUERTO DEL SWITCH
+```
+
+Por ejemplo:
+
+| Dirección MAC | Puerto |
+|---------------|--------|
+| AA:AA:AA:AA:AA:AA | Fa0/1 |
+| BB:BB:BB:BB:BB:BB | Fa0/2 |
+| CC:CC:CC:CC:CC:CC | Fa0/3 |
+
+De esta forma, si llega una trama destinada a:
+
+```text
+BB:BB:BB:BB:BB:BB
+```
+
+el switch consulta su tabla y puede comprobar:
+
+```text
+BB:BB:BB:BB:BB:BB
+          ↓
+        Fa0/2
+```
+
+Entonces puede reenviar la trama por ese puerto.
+
+---
+
+### El switch aprende las direcciones MAC
+
+La tabla MAC no necesita introducirse manualmente para cada ordenador.
+
+El switch puede aprender automáticamente qué dispositivos están conectados a sus puertos.
+
+Para ello observa:
+
+```text
+LA MAC DE ORIGEN
+```
+
+de las tramas que recibe.
+
+Supongamos que recibe por:
+
+```text
+Fa0/1
+```
+
+una trama cuya MAC de origen es:
+
+```text
+AA:AA:AA:AA:AA:AA
+```
+
+El switch aprende:
+
+```text
+AA:AA:AA:AA:AA:AA → Fa0/1
+```
+
+Después recibe por Fa0/2 una trama procedente de:
+
+```text
+BB:BB:BB:BB:BB:BB
+```
+
+y aprende:
+
+```text
+BB:BB:BB:BB:BB:BB → Fa0/2
+```
+
+Su tabla comienza a construirse automáticamente:
+
+```text
+TABLA MAC
+
+AA:AA:AA:AA:AA:AA → Fa0/1
+BB:BB:BB:BB:BB:BB → Fa0/2
+```
+
+Esta es una idea fundamental:
+
+> **El switch aprende observando la dirección MAC de origen de las tramas que recibe.**
+
+<figure class="figura-libro">
+  <img
+    src="../../assets/images/parte1/capitulo4/figura4_7.png"
+    alt="Aprendizaje de direcciones MAC y construcción de la tabla MAC de un switch"
+  >
+  <figcaption>
+    <strong>Figura 4.7.</strong> Funcionamiento de la tabla MAC de un switch. El switch observa la dirección MAC de origen de las tramas recibidas y la relaciona con el puerto por el que han llegado, construyendo así su tabla MAC.
+  </figcaption>
+</figure>
+
+---
+
+### Una comunicación inteligente
+
+Cuando el switch conoce la ubicación de la MAC de destino puede reenviar la trama únicamente por el puerto adecuado.
+
+Por ejemplo:
+
+```text
+PC0                    PC1
+MAC AA                  MAC BB
+  │                       │
+  └────── SWITCH ─────────┘
+```
+
+Si PC0 envía:
+
+```text
+Destino → BB
+```
+
+y el switch conoce:
+
+```text
+BB → Fa0/2
+```
+
+la trama se envía hacia PC1.
+
+<figure class="figura-libro">
+  <img
+    src="../../assets/images/parte1/capitulo4/figura4_10.png"
+    alt="Funcionamiento de un switch Ethernet utilizando direcciones MAC"
+  >
+  <figcaption>
+    <strong>Figura 4.10.</strong> Funcionamiento de un switch Ethernet. El switch analiza las direcciones MAC de las tramas y utiliza su tabla MAC para reenviar la información únicamente por el puerto correspondiente al dispositivo de destino.
+  </figcaption>
+</figure>
+
+De esta forma:
+
+- Se reduce el tráfico innecesario.
+- Varias comunicaciones pueden producirse simultáneamente.
+- Se mejora el rendimiento de la red.
+
+Este comportamiento diferencia claramente a un switch moderno de los antiguos **hubs**, que repetían la información por todos sus puertos.
+
+---
+
+### Dirección IP y dirección MAC
+
+Hasta ahora hemos visto dos tipos de direcciones:
+
+```text
+DIRECCIÓN IP
+
+DIRECCIÓN MAC
+```
+
+No debemos confundirlas.
+
+De forma simplificada:
+
+| Dirección IP | Dirección MAC |
+|--------------|---------------|
+| Dirección lógica | Dirección utilizada en Ethernet |
+| Identifica al dispositivo dentro de una red IP | Identifica una interfaz en la comunicación local |
+| Ejemplo: `192.168.1.20` | Ejemplo: `AA:BB:CC:DD:EE:FF` |
+| Utilizada por IP | Utilizada por Ethernet |
+
+Podemos pensar en ellas como dos niveles diferentes de la comunicación.
+
+Por ejemplo, un programa puede querer comunicarse con:
+
+```text
+192.168.1.20
+```
+
+pero Ethernet necesita finalmente construir una trama con una:
+
+```text
+MAC DESTINO
+```
+
+<figure class="figura-libro">
+  <img
+    src="../../assets/images/parte1/capitulo4/figura4_8.png"
+    alt="Relación entre una dirección IPv4 y una dirección MAC en una comunicación Ethernet"
+  >
+  <figcaption>
+    <strong>Figura 4.8.</strong> Relación entre dirección IP y dirección MAC. IP permite identificar el destino lógico de la comunicación, mientras que Ethernet utiliza direcciones MAC para entregar las tramas dentro de la red local.
+  </figcaption>
+</figure>
+
+Esto plantea una pregunta muy importante:
+
+> **Si conocemos la dirección IP del equipo de destino, ¿cómo averiguamos su dirección MAC?**
+
+Para resolver este problema utilizamos:
+
+```text
+ARP
+```
+
+---
+
+### ARP: relacionar una dirección IPv4 con una dirección MAC
+
+**ARP** significa:
+
+```text
+Address Resolution Protocol
+```
+
+Su función es permitir que un dispositivo averigüe qué dirección MAC corresponde a una determinada dirección IPv4 dentro de la red local.
+
+De forma sencilla:
+
+```text
+DIRECCIÓN IPv4
+      ↓
+     ARP
+      ↓
+DIRECCIÓN MAC
+```
+
+Supongamos que tenemos:
+
+```text
+PC0
+
+IP:
+192.168.1.10
+
+MAC:
+AA:AA:AA:AA:AA:AA
+```
+
+y quiere comunicarse con:
+
+```text
+PC1
+
+IP:
+192.168.1.20
+
+MAC:
+BB:BB:BB:BB:BB:BB
+```
+
+PC0 conoce:
+
+```text
+192.168.1.20
+```
+
+pero necesita conocer la MAC que debe utilizar para entregar la trama Ethernet.
+
+---
+
+### ARP Request
+
+Si PC0 todavía no conoce la dirección MAC correspondiente, envía una petición:
+
+```text
+ARP Request
+```
+
+La pregunta puede entenderse como:
+
+```text
+¿Quién tiene 192.168.1.20?
+```
+
+PC0 todavía no sabe qué MAC corresponde a esa dirección.
+
+Por eso la petición se envía mediante:
+
+```text
+BROADCAST
+```
+
+utilizando como MAC de destino:
+
+```text
+FF:FF:FF:FF:FF:FF
+```
+
+Conceptualmente:
+
+```text
+PC0
+192.168.1.10
+      │
+      │ ARP Request
+      │
+      │ ¿Quién tiene 192.168.1.20?
+      ↓
+    SWITCH
+   /   |   \
+  ↓    ↓    ↓
+PC1   PC2   PC3
+```
+
+Todos reciben la petición, pero solamente el dispositivo que tenga:
+
+```text
+192.168.1.20
+```
+
+debe responder.
+
+---
+
+### ARP Reply
+
+PC1 reconoce que la dirección solicitada es la suya y responde mediante:
+
+```text
+ARP Reply
+```
+
+La respuesta puede entenderse como:
+
+```text
+192.168.1.20
+es
+BB:BB:BB:BB:BB:BB
+```
+
+Por tanto:
+
+```text
+PC0                           PC1
+192.168.1.10                  192.168.1.20
+AA:AA:AA:AA:AA:AA            BB:BB:BB:BB:BB:BB
+
+ │                              │
+ │──── ARP Request ────────────>│
+ │  ¿Quién tiene 192.168.1.20?  │
+ │                              │
+ │<───── ARP Reply ─────────────│
+ │ 192.168.1.20 = BB:BB:...     │
+ │                              │
+```
+
+PC0 ya conoce la información necesaria para construir la trama Ethernet.
+
+<figure class="figura-libro">
+  <img
+    src="../../assets/images/parte1/capitulo4/figura4_9.png"
+    alt="Proceso ARP para obtener la dirección MAC correspondiente a una dirección IPv4"
+  >
+  <figcaption>
+    <strong>Figura 4.9.</strong> Funcionamiento básico de ARP. El equipo que desconoce la dirección MAC del destino envía un ARP Request mediante broadcast. El equipo cuya dirección IPv4 coincide responde mediante ARP Reply indicando su dirección MAC, que puede almacenarse temporalmente en la tabla ARP.
+  </figcaption>
+</figure>
+
+---
+
+### La tabla ARP
+
+Sería poco eficiente repetir continuamente el proceso ARP para los mismos dispositivos.
+
+Por este motivo, los equipos mantienen temporalmente una:
+
+```text
+TABLA ARP
+```
+
+En ella almacenan asociaciones entre:
+
+```text
+DIRECCIÓN IPv4 ↔ DIRECCIÓN MAC
+```
+
+Por ejemplo:
+
+| Dirección IPv4 | Dirección MAC |
+|----------------|---------------|
+| 192.168.1.20 | BB:BB:BB:BB:BB:BB |
+| 192.168.1.30 | CC:CC:CC:CC:CC:CC |
+
+Cuando el equipo necesita comunicarse nuevamente con:
+
+```text
+192.168.1.20
+```
+
+puede consultar primero su tabla ARP.
+
+Si la asociación todavía está almacenada, no necesita realizar inmediatamente una nueva petición ARP.
+
+---
+
+### Consultar la tabla ARP
+
+En Windows podemos consultar la tabla ARP utilizando:
+
+```cmd
+arp -a
+```
+
+El resultado puede mostrar información similar a:
+
+```text
+Interfaz: 192.168.1.10
+
+Dirección de Internet   Dirección física
+192.168.1.20            bb-bb-bb-bb-bb-bb
+192.168.1.30            cc-cc-cc-cc-cc-cc
+```
+
+Esto nos permite observar directamente las asociaciones entre:
+
+```text
+IP ↔ MAC
+```
+
+que conoce nuestro ordenador.
+
+!!! tip "Una prueba muy sencilla"
+
+    Puedes ejecutar:
+
+    ```cmd
+    arp -a
+    ```
+
+    realizar después un `ping` a otro equipo de la red:
+
+    ```cmd
+    ping 192.168.1.20
+    ```
+
+    y volver a ejecutar:
+
+    ```cmd
+    arp -a
+    ```
+
+    Comprueba si aparece la dirección MAC del equipo con el que acabas de comunicarte.
+
+---
+
+### No confundas la tabla MAC con la tabla ARP
+
+Aunque sus nombres pueden parecer similares, son cosas diferentes.
+
+```text
+SWITCH
+   ↓
+TABLA MAC
+   ↓
+MAC ↔ PUERTO
+```
+
+Por ejemplo:
+
+```text
+AA:AA:AA:AA:AA:AA → Fa0/1
+```
+
+Mientras que un ordenador puede mantener:
+
+```text
+TABLA ARP
+   ↓
+IP ↔ MAC
+```
+
+Por ejemplo:
+
+```text
+192.168.1.20 → BB:BB:BB:BB:BB:BB
+```
+
+Por tanto:
+
+| Tabla MAC | Tabla ARP |
+|-----------|-----------|
+| La utiliza principalmente el switch para reenviar tramas | La mantienen los equipos para relacionar IPv4 con MAC |
+| Relaciona MAC con puerto | Relaciona IPv4 con MAC |
+| `MAC → puerto` | `IPv4 → MAC` |
+
+Esta diferencia es muy importante.
+
+---
+
+### El proceso completo
+
+Ya podemos comprender mejor qué ocurre cuando dos ordenadores de nuestra red local se comunican.
+
+Supongamos:
+
+```text
+PC0
+192.168.1.10
+```
+
+quiere enviar información a:
+
+```text
+PC1
+192.168.1.20
+```
+
+Podemos simplificar el proceso:
+
+```text
+PC0 conoce la IP de PC1
+        ↓
+192.168.1.20
+        ↓
+¿Conozco su MAC?
+        ↓
+       NO
+        ↓
+ARP Request
+        ↓
+¿Quién tiene 192.168.1.20?
+        ↓
+ARP Reply
+        ↓
+BB:BB:BB:BB:BB:BB
+        ↓
+PC0 guarda IP ↔ MAC
+en su tabla ARP
+        ↓
+Construye la trama Ethernet
+        ↓
+MAC destino = BB:BB:BB:BB:BB:BB
+        ↓
+SWITCH
+        ↓
+Consulta su tabla MAC
+        ↓
+Reenvía la trama por
+el puerto correspondiente
+        ↓
+PC1
+```
+
+Ahora podemos ver cómo colaboran distintos elementos:
+
+```text
+IP
+ ↓
+identifica el destino lógico
+
+ARP
+ ↓
+obtiene la MAC correspondiente
+
+ETHERNET
+ ↓
+construye la trama
+
+SWITCH
+ ↓
+utiliza la MAC para reenviarla
+```
+
+---
+
+!!! note "Recuerda"
+
+    Para una comunicación Ethernet local debemos distinguir:
+
+    ```text
+    IP   → dirección lógica
+
+    MAC  → dirección utilizada en la trama Ethernet
+
+    ARP  → relaciona IPv4 con MAC
+
+    SWITCH → utiliza las MAC para reenviar las tramas
+    ```
+
+!!! question "Piensa un momento..."
+
+    Un ordenador conoce la dirección:
+
+    ```text
+    192.168.1.25
+    ```
+
+    del equipo con el que quiere comunicarse, pero todavía no conoce su dirección MAC.
+
+    ¿Qué protocolo puede utilizar para averiguarla?
 
 ---
 
@@ -498,7 +1335,11 @@ Este comportamiento diferencia claramente a un switch moderno de los antiguos co
 
 Ethernet ha evolucionado de forma constante desde su aparición.
 
-Las primeras versiones funcionaban a velocidades de **10 Mb/s**.
+Las primeras versiones funcionaban a velocidades de:
+
+```text
+10 Mb/s
+```
 
 Posteriormente surgieron nuevas versiones capaces de transmitir a:
 
@@ -509,9 +1350,7 @@ Posteriormente surgieron nuevas versiones capaces de transmitir a:
 - **40 Gb/s**
 - **100 Gb/s** o superiores en centros de datos y redes troncales.
 
-A pesar de este incremento de velocidad, el principio de funcionamiento continúa siendo el mismo.
-
-Esta compatibilidad ha permitido que Ethernet siga siendo la tecnología predominante en las redes locales.
+A pesar de este incremento de velocidad, muchos de los principios fundamentales de Ethernet se mantienen.
 
 ---
 
@@ -521,32 +1360,34 @@ El éxito de Ethernet no se debe únicamente a su velocidad.
 
 También influyen otros factores:
 
-- Es un estándar abierto ampliamente aceptado.
+- Es un estándar ampliamente aceptado.
 - Existe una gran variedad de fabricantes compatibles.
 - Su instalación resulta sencilla.
 - Permite ampliar fácilmente la red.
 - Su coste es reducido en comparación con otras tecnologías.
 - Ofrece un funcionamiento fiable y estable.
 
-Gracias a estas características, Ethernet continúa siendo la tecnología utilizada en la inmensa mayoría de las redes locales actuales.
+Gracias a estas características, Ethernet continúa siendo la tecnología utilizada en la inmensa mayoría de las redes locales cableadas actuales.
 
 ---
 
 !!! note "Recuerda"
 
-    Ethernet es el estándar más utilizado para construir redes locales y está definido por la norma IEEE 802.3.
+    Ethernet es el conjunto de tecnologías definido principalmente por la familia de estándares **IEEE 802.3** y constituye la base de la mayoría de las redes LAN cableadas actuales.
 
 !!! tip "¿Sabías que...?"
 
-    Aunque hoy en día es habitual trabajar con enlaces de 1 Gb/s o superiores, el funcionamiento básico de Ethernet sigue siendo muy similar al de sus primeras versiones.
+    Cuando realizas un `ping` a otro ordenador de tu red local, es posible que antes del primer mensaje ICMP tu equipo necesite utilizar ARP para averiguar la dirección MAC del destinatario.
 
 !!! abstract "🛠️ En el taller..."
 
-    Durante las prácticas del curso utilizarás switches Cisco que implementan el estándar Ethernet para crear y ampliar redes locales.
+    En la práctica con Cisco Packet Tracer observarás las direcciones MAC de los equipos, la tabla MAC del switch y el intercambio **ARP Request / ARP Reply** que se produce antes de determinadas comunicaciones.
 
 !!! question "Piensa un momento..."
 
-    Si mañana tuvieras que añadir diez ordenadores más a la red de un aula de informática, ¿qué ventajas ofrecería una topología física en estrella frente a una topología en bus?
+    Si un switch recibe una trama destinada a una dirección MAC que ya conoce, ¿qué información de su tabla utilizará para decidir por qué puerto debe reenviarla?
+
+
 
 ## 4.5 Selección de una topología según las necesidades
 
@@ -659,11 +1500,11 @@ Esta combinación permite obtener redes escalables, fiables y fáciles de manten
 
 <figure class="figura-libro">
   <img
-    src="../../assets/images/parte1/capitulo4/figura4_7.png"
+    src="../../assets/images/parte1/capitulo4/figura4_11.png"
     alt="Selección de topologías según el tipo de instalación"
   >
   <figcaption>
-    <strong>Figura 4.7.</strong> Ejemplos de selección de topologías según las necesidades de la instalación. Las redes domésticas suelen utilizar una estrella sencilla, mientras que las redes empresariales y educativas emplean estructuras jerárquicas y los entornos críticos incorporan enlaces redundantes para aumentar la disponibilidad.
+    <strong>Figura 4.11.</strong> Ejemplos de selección de topologías según las necesidades de la instalación. Las redes domésticas suelen utilizar una estrella sencilla, mientras que las redes empresariales y educativas emplean estructuras jerárquicas y los entornos críticos incorporan enlaces redundantes para aumentar la disponibilidad.
   </figcaption>
 </figure>
 
@@ -713,11 +1554,11 @@ Al finalizar la práctica serás capaz de:
 
 <figure class="figura-libro">
   <img
-    src="../../assets/images/parte1/capitulo4/figura4_8.png"
+    src="../../assets/images/parte1/capitulo4/figura4_12.png"
     alt="Topología en estrella utilizada en la práctica"
   >
   <figcaption>
-    <strong>Figura 4.8.</strong> Topología en estrella utilizada en la práctica guiada. Cuatro ordenadores se conectan mediante enlaces Ethernet independientes a un switch Cisco 2960 y utilizan direcciones IP pertenecientes a la misma red local.
+    <strong>Figura 4.12.</strong> Topología en estrella utilizada en la práctica guiada. Cuatro ordenadores se conectan mediante enlaces Ethernet independientes a un switch Cisco 2960 y utilizan direcciones IP pertenecientes a la misma red local.
   </figcaption>
 </figure>
 
@@ -750,17 +1591,343 @@ No es necesario configurar puerta de enlace.
 
 ---
 
-## Paso 3. Comprobar la conectividad
+### Comprobar las direcciones MAC de los equipos
 
-Desde **PC0** ejecuta:
+Antes de realizar la primera comunicación vamos a comprobar que cada interfaz Ethernet tiene dos direcciones diferentes:
 
 ```text
+Dirección IPv4
+Dirección MAC
+```
+
+Selecciona:
+
+```text
+PC0
+ ↓
+Desktop
+ ↓
+Command Prompt
+```
+
+y ejecuta:
+
+```cmd
+ipconfig /all
+```
+
+Localiza la dirección IPv4 y la dirección física o MAC.
+
+Anótalas:
+
+| Equipo | Dirección IPv4 | Dirección MAC |
+|--------|----------------|---------------|
+| PC0 | 192.168.1.10 | |
+| PC1 | 192.168.1.11 | |
+| PC2 | 192.168.1.12 | |
+| PC3 | 192.168.1.13 | |
+
+Repite el procedimiento en los cuatro ordenadores.
+
+!!! question "Comprueba"
+
+    ¿Tienen todos los ordenadores una dirección MAC diferente?
+
+    ¿Qué formato utiliza Packet Tracer para representar estas direcciones?
+
+### Comprobar la tabla ARP antes de la comunicación
+
+Volvemos a PC0:
+
+```text
+PC0
+ ↓
+Desktop
+ ↓
+Command Prompt
+```
+
+Ejecuta:
+
+```cmd
+arp -a
+```
+
+Observa las asociaciones que aparecen.
+
+La tabla ARP relaciona:
+
+```text
+DIRECCIÓN IPv4
+       ↕
+DIRECCIÓN MAC
+```
+
+Es posible que todavía no aparezca PC3, ya que PC0 puede no haberse comunicado todavía con él.
+
+Nuestro objetivo será comprobar qué ocurre cuando PC0 necesita enviar información a:
+
+```text
+192.168.1.13
+```
+
+### Realizar la primera comunicación
+
+Desde PC0 ejecuta:
+
+```cmd
 ping 192.168.1.13
 ```
 
-Comprueba que la comunicación se realiza correctamente.
+Estamos intentando comunicarnos con PC3.
 
-Repite la prueba entre distintos ordenadores.
+Pero antes de enviar correctamente las tramas Ethernet, PC0 necesita conocer la dirección MAC correspondiente a:
+
+```text
+192.168.1.13
+```
+
+Si todavía no dispone de esta información, utilizará:
+
+```text
+ARP
+```
+
+De forma simplificada:
+
+```text
+PC0 conoce:
+
+192.168.1.13
+      ↓
+¿Conozco su MAC?
+      ↓
+     NO
+      ↓
+ARP Request
+      ↓
+¿Quién tiene 192.168.1.13?
+      ↓
+ARP Reply
+      ↓
+PC3 comunica su MAC
+      ↓
+PC0 ya puede enviar
+las tramas necesarias
+      ↓
+ICMP
+      ↓
+PING
+```
+
+Por tanto, aunque el usuario únicamente haya ejecutado:
+
+```cmd
+ping 192.168.1.13
+```
+
+pueden producirse dos procesos diferentes:
+
+```text
+ARP
+ ↓
+averiguar la MAC
+
+ICMP
+ ↓
+comprobar la comunicación
+```
+
+!!! note "El primer ping puede tardar un poco más"
+
+    En algunas situaciones, la primera respuesta puede tardar más o incluso perderse mientras se realizan procesos previos como la resolución ARP.
+
+    Los siguientes intentos pueden realizarse más rápidamente porque el equipo ya conoce la dirección MAC del destino.
+
+### ¿Qué ha aprendido PC0?
+
+Después de realizar el `ping`, vuelve a ejecutar:
+
+```cmd
+arp -a
+```
+
+Busca la dirección:
+
+```text
+192.168.1.13
+```
+
+Deberías poder observar una asociación entre la dirección IPv4 de PC3 y su dirección MAC.
+
+Conceptualmente:
+
+```text
+TABLA ARP DE PC0
+
+192.168.1.13 → MAC de PC3
+```
+
+Compara esa dirección MAC con la que anotaste anteriormente utilizando `ipconfig /all`.
+
+¿Coinciden?
+
+Esto demuestra que PC0 ha aprendido qué dirección MAC corresponde a la dirección IPv4 de PC3.
+
+### Observar ARP en Simulation Mode
+
+Ahora vamos a observar el proceso directamente.
+
+Cambia Packet Tracer de:
+
+```text
+Realtime
+```
+
+a:
+
+```text
+Simulation
+```
+
+En los filtros de eventos deja visibles:
+
+```text
+ARP
+ICMP
+```
+
+Realiza nuevamente una comunicación entre PC0 y PC3.
+
+!!! warning "ARP puede no aparecer"
+
+    Si PC0 ya conoce la dirección MAC de PC3 porque acabamos de realizar el `ping`, puede utilizar la información almacenada en su tabla ARP y no necesitar realizar otra petición.
+
+    En ese caso, elimina las asociaciones dinámicas de la tabla ARP o reinicia la situación de la simulación antes de repetir la prueba.
+
+Observa el orden de los acontecimientos.
+
+Primero deberías poder identificar:
+
+```text
+ARP Request
+```
+
+La petición pregunta esencialmente:
+
+```text
+¿Quién tiene 192.168.1.13?
+```
+
+Como PC0 todavía desconoce la MAC de PC3, la petición utiliza broadcast:
+
+```text
+FF:FF:FF:FF:FF:FF
+```
+
+Después aparece:
+
+```text
+ARP Reply
+```
+
+PC3 comunica su dirección MAC a PC0.
+
+Finalmente pueden intercambiarse los mensajes:
+
+```text
+ICMP Echo Request
+ICMP Echo Reply
+```
+
+Por tanto:
+
+```text
+ARP Request
+     ↓
+ARP Reply
+     ↓
+ICMP Echo Request
+     ↓
+ICMP Echo Reply
+```
+
+!!! question "Observa y responde"
+
+    1. ¿Qué dirección IPv4 busca PC0 mediante ARP?
+    2. ¿Qué dirección MAC utiliza el ARP Request como destino?
+    3. ¿Por qué se utiliza broadcast?
+    4. ¿Qué equipo responde al ARP Request?
+    5. ¿Qué información contiene el ARP Reply?
+    6. ¿Qué protocolo aparece después de ARP?
+
+### Comprobar lo que ha aprendido el switch
+
+Mientras los ordenadores se han comunicado, el switch también ha estado aprendiendo.
+
+Recuerda:
+
+```text
+PC
+ ↓
+Tabla ARP
+ ↓
+IP ↔ MAC
+```
+
+mientras que:
+
+```text
+SWITCH
+ ↓
+Tabla MAC
+ ↓
+MAC ↔ puerto
+```
+
+Selecciona el switch y abre:
+
+```text
+CLI
+```
+
+Pulsa `Enter` si es necesario y ejecuta:
+
+```text
+enable
+```
+
+Después:
+
+```text
+show mac address-table
+```
+
+Observa las direcciones MAC aprendidas por el switch.
+
+Encontrarás asociaciones similares a:
+
+```text
+MAC                   PUERTO
+
+MAC de PC0    →       Fa0/1
+MAC de PC1    →       Fa0/2
+MAC de PC2    →       Fa0/3
+MAC de PC3    →       Fa0/4
+```
+
+Los puertos concretos dependerán de dónde hayas conectado cada ordenador.
+
+Compara las MAC mostradas con las que anotaste anteriormente.
+
+!!! question "Piensa como un switch"
+
+    Si llega una trama destinada a la MAC de PC3:
+
+    1. ¿Qué tabla consulta el switch?
+    2. ¿Busca una dirección IPv4 o una dirección MAC?
+    3. ¿Qué información obtiene de la tabla?
+    4. ¿Por qué puerto enviará la trama?
 
 ---
 
@@ -768,11 +1935,11 @@ Repite la prueba entre distintos ordenadores.
 
 <figure class="figura-libro">
   <img
-    src="../../assets/images/parte1/capitulo4/figura4_9.png"
+    src="../../assets/images/parte1/capitulo4/figura4_13.png"
     alt="Efecto de una avería en un enlace de una topología en estrella"
   >
   <figcaption>
-    <strong>Figura 4.9.</strong> Efecto de la desconexión de un enlace en una topología en estrella. El equipo PC2 queda aislado, mientras que el resto de dispositivos continúa comunicándose normalmente a través del switch.
+    <strong>Figura 4.13.</strong> Efecto de la desconexión de un enlace en una topología en estrella. El equipo PC2 queda aislado, mientras que el resto de dispositivos continúa comunicándose normalmente a través del switch.
   </figcaption>
 </figure>
 
@@ -824,6 +1991,38 @@ Responde:
 4. ¿Qué ventajas presenta esta topología respecto a una red en bus?
 
 5. ¿Por qué las redes Ethernet actuales utilizan switches?
+
+### Tabla MAC frente a tabla ARP
+
+Después de realizar la práctica ya podemos distinguir claramente ambas tablas:
+
+| | Tabla ARP | Tabla MAC |
+|---|---|---|
+| ¿Dónde la hemos consultado? | PC | Switch |
+| ¿Qué relaciona? | IPv4 ↔ MAC | MAC ↔ puerto |
+| Comando utilizado | `arp -a` | `show mac address-table` |
+| ¿Para qué sirve? | Conocer la MAC correspondiente a una IPv4 | Saber por qué puerto reenviar una trama |
+
+No debemos confundirlas:
+
+```text
+PC0
+ │
+ │ arp -a
+ ↓
+TABLA ARP
+IPv4 ↔ MAC
+
+
+SWITCH
+ │
+ │ show mac address-table
+ ↓
+TABLA MAC
+MAC ↔ PUERTO
+```
+
+Ambas participan en la comunicación, pero realizan funciones diferentes.
 
 ---
 
